@@ -11,7 +11,7 @@ import humanize from '@lenster/lib/humanize';
 import nFormatter from '@lenster/lib/nFormatter';
 import { Card, Modal, Spinner } from '@lenster/ui';
 import { getTimetoNow } from '@lib/formatTime';
-import { PostHog } from '@lib/posthog';
+import { Leafwatch } from '@lib/leafwatch';
 import { Plural, t, Trans } from '@lingui/macro';
 import type { Proposal, Vote } from '@workers/snapshot-relay';
 import axios from 'axios';
@@ -20,7 +20,6 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useAppStore } from 'src/store/app';
-import { useReadLocalStorage } from 'usehooks-ts';
 
 import New from '../Badges/New';
 import VoteProposal from './VoteProposal';
@@ -45,7 +44,7 @@ const Choices: FC<ChoicesProps> = ({
     show: false,
     position: 0
   });
-  const accessToken = useReadLocalStorage('accessToken');
+  const accessToken = localStorage.getItem('accessToken');
 
   const { id, choices, symbol, scores, scores_total, state, type, end } =
     proposal;
@@ -82,7 +81,7 @@ const Choices: FC<ChoicesProps> = ({
     }
 
     setVoteConfig({ show: true, position });
-    PostHog.track(PUBLICATION.WIDGET.SNAPSHOT.OPEN_CAST_VOTE, {
+    Leafwatch.track(PUBLICATION.WIDGET.SNAPSHOT.OPEN_CAST_VOTE, {
       proposal_id: id
     });
   };
@@ -110,7 +109,7 @@ const Choices: FC<ChoicesProps> = ({
         }
       });
       refetch?.();
-      PostHog.track(PUBLICATION.WIDGET.SNAPSHOT.VOTE, {
+      Leafwatch.track(PUBLICATION.WIDGET.SNAPSHOT.VOTE, {
         proposal_id: id,
         proposal_source: APP_NAME.toLowerCase()
       });

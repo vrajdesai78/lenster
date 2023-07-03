@@ -1,6 +1,6 @@
 import { EXPLORE } from '@lenster/data/tracking';
 import { PublicationMainFocus } from '@lenster/lens';
-import { PostHog } from '@lib/posthog';
+import { Leafwatch } from '@lib/leafwatch';
 import { t } from '@lingui/macro';
 import clsx from 'clsx';
 import type { Dispatch, FC } from 'react';
@@ -10,18 +10,18 @@ interface FeedLinkProps {
   type?: PublicationMainFocus;
 }
 
-interface FeedTypeProps {
+interface FeedFocusTypeProps {
   setFocus: Dispatch<PublicationMainFocus>;
   focus?: PublicationMainFocus;
 }
 
-const FeedType: FC<FeedTypeProps> = ({ setFocus, focus }) => {
+const FeedFocusType: FC<FeedFocusTypeProps> = ({ setFocus, focus }) => {
   const FeedLink: FC<FeedLinkProps> = ({ name, type }) => (
     <button
       type="button"
       onClick={() => {
         setFocus(type as PublicationMainFocus);
-        PostHog.track(EXPLORE.SWITCH_EXPLORE_FEED_FOCUS, {
+        Leafwatch.track(EXPLORE.SWITCH_EXPLORE_FEED_FOCUS, {
           explore_feed_focus: (type ?? 'all_posts').toLowerCase()
         });
       }}
@@ -50,4 +50,4 @@ const FeedType: FC<FeedTypeProps> = ({ setFocus, focus }) => {
   );
 };
 
-export default FeedType;
+export default FeedFocusType;

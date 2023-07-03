@@ -17,6 +17,7 @@ export const PROFILE = {
   OPEN_SUPER_FOLLOW: 'Open super follow modal',
   OPEN_FOLLOWERS: 'Open followers modal',
   OPEN_FOLLOWING: 'Open following modal',
+  COPY_PROFILE_LINK: 'Copy profile link',
   SWITCH_PROFILE_FEED_TAB: 'Switch profile feed tab',
   SWITCH_PROFILE: 'Switch profile',
   LOGOUT: 'Profile logout'
@@ -31,6 +32,8 @@ export const PUBLICATION = {
   SHARE: 'Share publication',
   TRANSLATE: 'Translate publication',
   COPY_TEXT: 'Copy publication text',
+  TOGGLE_BOOKMARK: 'Toggle publication bookmark',
+  TOGGLE_NOT_INTERESTED: 'Toggle publication not interested',
   DELETE: 'Delete publication',
   REPORT: 'Report publication',
   CLICK_OEMBED: 'Click publication oembed',
@@ -169,3 +172,19 @@ export enum FollowUnfollowSource {
   PROFILE_PAGE = 'profile_page',
   PROFILE_POPOVER = 'profile_popover'
 }
+
+export const ALL_EVENTS = {
+  PAGEVIEW,
+  ...AUTH,
+  ...PROFILE,
+  ...PUBLICATION,
+  ...NOTIFICATION,
+  ...EXPLORE,
+  ...MESSAGES,
+  ...SETTINGS,
+  ...MOD,
+  ...STAFFTOOLS,
+  ...SYSTEM,
+  ...MISCELLANEOUS,
+  ...ONBOARDING
+};

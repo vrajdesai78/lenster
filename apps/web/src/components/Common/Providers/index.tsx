@@ -18,8 +18,8 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 import ErrorBoundary from '../ErrorBoundary';
 import Layout from '../Layout';
-import AnalyticsProvider from './AnalyticsProvider';
 import LanguageProvider from './LanguageProvider';
+import LeafwatchProvider from './LeafwatchProvider';
 import UserSigNoncesProvider from './UserSigNoncesProvider';
 
 const { chains, publicClient } = configureChains(
@@ -51,24 +51,20 @@ const apolloClient = webClient;
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <LanguageProvider>
+      <LeafwatchProvider />
       <ErrorBoundary>
-        <AnalyticsProvider>
-          <WagmiConfig config={wagmiConfig}>
-            <ApolloProvider client={apolloClient}>
-              <UserSigNoncesProvider />
-              <QueryClientProvider client={queryClient}>
-                <LivepeerConfig
-                  client={livepeerClient}
-                  theme={getLivepeerTheme}
-                >
-                  <ThemeProvider defaultTheme="light" attribute="class">
-                    <Layout>{children}</Layout>
-                  </ThemeProvider>
-                </LivepeerConfig>
-              </QueryClientProvider>
-            </ApolloProvider>
-          </WagmiConfig>
-        </AnalyticsProvider>
+        <WagmiConfig config={wagmiConfig}>
+          <ApolloProvider client={apolloClient}>
+            <UserSigNoncesProvider />
+            <QueryClientProvider client={queryClient}>
+              <LivepeerConfig client={livepeerClient} theme={getLivepeerTheme}>
+                <ThemeProvider defaultTheme="light" attribute="class">
+                  <Layout>{children}</Layout>
+                </ThemeProvider>
+              </LivepeerConfig>
+            </QueryClientProvider>
+          </ApolloProvider>
+        </WagmiConfig>
       </ErrorBoundary>
     </LanguageProvider>
   );

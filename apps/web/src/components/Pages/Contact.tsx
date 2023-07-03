@@ -17,7 +17,7 @@ import {
   TextArea,
   useZodForm
 } from '@lenster/ui';
-import { PostHog } from '@lib/posthog';
+import { Leafwatch } from '@lib/leafwatch';
 import { t, Trans } from '@lingui/macro';
 import axios from 'axios';
 import type { FC } from 'react';
@@ -43,12 +43,12 @@ const Contact: FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffectOnce(() => {
-    PostHog.track(PAGEVIEW, { page: 'contact' });
-  });
-
   const form = useZodForm({
     schema: newContactSchema
+  });
+
+  useEffectOnce(() => {
+    Leafwatch.track(PAGEVIEW, { page: 'contact' });
   });
 
   const submitToFreshdesk = async (

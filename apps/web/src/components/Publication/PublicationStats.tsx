@@ -10,7 +10,7 @@ import { PUBLICATION } from '@lenster/data/tracking';
 import type { Publication } from '@lenster/lens';
 import nFormatter from '@lenster/lib/nFormatter';
 import { Modal } from '@lenster/ui';
-import { PostHog } from '@lib/posthog';
+import { Leafwatch } from '@lib/leafwatch';
 import { Plural, t } from '@lingui/macro';
 import type { FC } from 'react';
 import { useState } from 'react';
@@ -37,6 +37,9 @@ const PublicationStats: FC<PublicationStatsProps> = ({ publication }) => {
   const collectCount = isMirror
     ? publication?.mirrorOf?.stats?.totalAmountOfCollects
     : publication?.stats?.totalAmountOfCollects;
+  const bookmarkCount = isMirror
+    ? publication?.mirrorOf?.stats?.totalBookmarks
+    : publication?.stats?.totalBookmarks;
   const publicationId = isMirror ? publication?.mirrorOf?.id : publication?.id;
 
   return (
@@ -58,7 +61,7 @@ const PublicationStats: FC<PublicationStatsProps> = ({ publication }) => {
             type="button"
             onClick={() => {
               setShowMirrorsModal(true);
-              PostHog.track(PUBLICATION.OPEN_MIRRORS, {
+              Leafwatch.track(PUBLICATION.OPEN_MIRRORS, {
                 publication_id: publicationId
               });
             }}
@@ -90,7 +93,7 @@ const PublicationStats: FC<PublicationStatsProps> = ({ publication }) => {
             type="button"
             onClick={() => {
               setShowLikesModal(true);
-              PostHog.track(PUBLICATION.OPEN_LIKES, {
+              Leafwatch.track(PUBLICATION.OPEN_LIKES, {
                 publication_id: publicationId
               });
             }}
@@ -122,7 +125,7 @@ const PublicationStats: FC<PublicationStatsProps> = ({ publication }) => {
             type="button"
             onClick={() => {
               setShowCollectorsModal(true);
-              PostHog.track(PUBLICATION.OPEN_COLLECTORS, {
+              Leafwatch.track(PUBLICATION.OPEN_COLLECTORS, {
                 publication_id: publicationId
               });
             }}
@@ -147,6 +150,19 @@ const PublicationStats: FC<PublicationStatsProps> = ({ publication }) => {
             <Collectors publicationId={publicationId} />
           </Modal>
         </>
+      )}
+      {bookmarkCount > 0 && (
+        <span data-testid="bookmark-stats">
+          <b className="text-black dark:text-white">
+            {nFormatter(bookmarkCount)}
+          </b>{' '}
+          <Plural
+            value={bookmarkCount}
+            zero="Bookmark"
+            one="Bookmark"
+            other="Bookmarks"
+          />
+        </span>
       )}
     </div>
   );

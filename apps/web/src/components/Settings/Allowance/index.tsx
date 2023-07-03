@@ -11,7 +11,7 @@ import {
   useEnabledModulesQuery
 } from '@lenster/lens';
 import { Card, GridItemEight, GridItemFour, GridLayout } from '@lenster/ui';
-import { PostHog } from '@lib/posthog';
+import { Leafwatch } from '@lib/leafwatch';
 import { t, Trans } from '@lingui/macro';
 import type { NextPage } from 'next';
 import { useState } from 'react';
@@ -46,15 +46,15 @@ const AllowanceSettings: NextPage = () => {
     error: enabledModulesError
   } = useEnabledModulesQuery();
 
+  useEffectOnce(() => {
+    Leafwatch.track(PAGEVIEW, { page: 'settings', subpage: 'allowance' });
+  });
+
   const { data, loading, error, refetch } =
     useApprovedModuleAllowanceAmountQuery({
       variables: { request: getAllowancePayload(DEFAULT_COLLECT_TOKEN) },
       skip: !currentProfile?.id || enabledModulesLoading
     });
-
-  useEffectOnce(() => {
-    PostHog.track(PAGEVIEW, { page: 'settings', subpage: 'allowance' });
-  });
 
   if (error || enabledModulesError) {
     return <Custom500 />;
